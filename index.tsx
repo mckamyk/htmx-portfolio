@@ -4,6 +4,7 @@ import { swagger } from '@elysiajs/swagger'
 import * as elements from 'typed-html'
 import { Main } from './src/App'
 import { SearchHeader } from './src/SearchHeader'
+import { getBalance, getHistoricalBalances } from './src/search'
 
 const app = new Elysia()
   .use(swagger())
@@ -12,20 +13,20 @@ const app = new Elysia()
     <BaseHtml>
       <body class="bg-slate-800">
         <SearchHeader />
-        <div hx-get="/main" hx-trigger="load" />
+        <div class="flex justify-center">
+          <div hx-get="/main" hx-trigger="load" class="w-[1200px] mt-8" id="main" />
+        </div>
       </body>
     </BaseHtml>
   )).get("/main", () => <Main />)
-  .post("/search", ({ body }) => {
-    const { search } = body
-    if (search)
-      return (
-        <div>You searched for {search}</div>
-      )
-    else return (<div></div>)
-  }, {
+  .post("/search", ({ body }) => getBalance(body.search), {
     body: t.Object({
       search: t.String()
+    })
+  })
+  .post("/historical", ({ body }) => getHistoricalBalances(body.address), {
+    body: t.Object({
+      address: t.String()
     })
   })
 
