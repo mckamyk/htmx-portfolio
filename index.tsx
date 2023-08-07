@@ -1,26 +1,37 @@
-import {Elysia} from 'elysia'
-import {html} from '@elysiajs/html'
-import {swagger} from '@elysiajs/swagger'
+import { Elysia, t } from 'elysia'
+import { html } from '@elysiajs/html'
+import { swagger } from '@elysiajs/swagger'
 import * as elements from 'typed-html'
 import { Main } from './src/App'
+import { SearchHeader } from './src/SearchHeader'
 
 const app = new Elysia()
   .use(swagger())
   .use(html())
   .get('/', ({ html }) => html(
-  <BaseHtml>
-    <body
-      class="flex w-full h-screen bg-slate-800"
-      hx-get="/main"
-      hx-trigger="load"
-      hx-swap="outerHTML"
-    />
-  </BaseHtml>
-)).get("/main", () => <Main />)
+    <BaseHtml>
+      <body class="bg-slate-800">
+        <SearchHeader />
+        <div hx-get="/main" hx-trigger="load" />
+      </body>
+    </BaseHtml>
+  )).get("/main", () => <Main />)
+  .post("/search", ({ body }) => {
+    const { search } = body
+    if (search)
+      return (
+        <div>You searched for {search}</div>
+      )
+    else return (<div></div>)
+  }, {
+    body: t.Object({
+      search: t.String()
+    })
+  })
 
 app.listen(3000)
 
-const BaseHtml = ({children}: elements.Children) => `
+const BaseHtml = ({ children }: elements.Children) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
