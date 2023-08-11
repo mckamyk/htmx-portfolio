@@ -2,6 +2,9 @@
   "name": "htmx-portfolio",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run --watch index.tsx"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },
@@ -9,11 +12,12 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@bogeychan/elysia-logger": "latest",
     "@elysiajs/html": "^0.6.0",
     "@elysiajs/swagger": "^0.6.0",
     "dotenv": "^16.3.1",
     "elysia": "^0.6.1",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
     "typed-html": "^3.0.1",
     "viem": "^1.5.3"
   }

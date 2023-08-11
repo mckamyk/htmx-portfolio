@@ -5,11 +5,17 @@ import * as elements from 'typed-html'
 import { Main } from './src/App'
 import { SearchHeader } from './src/SearchHeader'
 import { getBalance, getHistoricalBalances } from './src/search'
+import {logger} from './logger'
 
 const app = new Elysia()
   .use(swagger())
+  .use(logger())
   .use(html())
-  .get('/', ({ html }) => html(
+  .on('beforeHandle', (ctx) => {
+    ctx.log.info(ctx.request)
+  })
+  .get('/', ({html, log, request}) => {
+  return html(
     <BaseHtml>
       <body class="bg-slate-800">
         <SearchHeader />
@@ -18,7 +24,7 @@ const app = new Elysia()
         </div>
       </body>
     </BaseHtml>
-  )).get("/main", () => <Main />)
+  )}).get("/main", () => <Main />)
   .post("/search", ({ body }) => getBalance(body.search), {
     body: t.Object({
       search: t.String()
@@ -31,6 +37,9 @@ const app = new Elysia()
   })
 
 app.listen(3000)
+
+console.log(`Listening at ${app.server?.hostname} on ${app.server?.port}`)
+
 
 const BaseHtml = ({ children }: elements.Children) => `
 <!DOCTYPE html>
