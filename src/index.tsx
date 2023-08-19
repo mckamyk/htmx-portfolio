@@ -2,10 +2,12 @@ import { Elysia, t } from 'elysia'
 import { html } from '@elysiajs/html'
 import { swagger } from '@elysiajs/swagger'
 import * as elements from 'typed-html'
-import { Main } from './src/App'
-import { SearchHeader } from './src/SearchHeader'
-import { getBalance, getHistoricalBalances } from './src/search'
+import { Main } from './App'
+import { SearchHeader } from './SearchHeader'
+import { getBalance, getHistoricalBalances } from './search'
 import {logger} from './logger'
+import * as reth from './components/reth'
+import * as prysm from './components/prysm'
 
 export const app = new Elysia()
   .use(swagger())

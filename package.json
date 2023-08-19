@@ -2,9 +2,6 @@
   "name": "htmx-portfolio",
   "module": "index.ts",
   "type": "module",
-  "scripts": {
-    "dev": "bun run --watch index.tsx"
-  },
   "devDependencies": {
     "bun-types": "latest"
   },
@@ -22,6 +19,7 @@
     "pino": "^8.15.0",
     "pino-pretty": "^10.2.0",
     "typed-html": "^3.0.1",
-    "viem": "^1.5.3"
+    "viem": "^1.5.3",
+    "zod": "^3.22.2"
   }
 }
