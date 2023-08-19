@@ -7,7 +7,7 @@ import { SearchHeader } from './src/SearchHeader'
 import { getBalance, getHistoricalBalances } from './src/search'
 import {logger} from './logger'
 
-const app = new Elysia()
+export const app = new Elysia()
   .use(swagger())
   .use(logger())
   .use(html())
@@ -36,6 +36,9 @@ const app = new Elysia()
     })
   })
 
+reth.registerRouter(app)
+prysm.registerRouter(app)
+
 app.listen(3000)
 
 console.log(`Listening at ${app.server?.hostname} on ${app.server?.port}`)
@@ -50,6 +53,7 @@ const BaseHtml = ({ children }: elements.Children) => `
   <meta name="color-scheme" content="dark">
   <title>Test Portfolio</title>
   <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/hyperscript.org"></script>
 </head>

@@ -8,4 +8,3 @@ export const client = createPublicClient({
   chain: mainnet
 })
 
-
