@@ -6,7 +6,8 @@ export const Main = () => (
       <div class="text-center">Reth</div>
       <div hx-trigger="load" hx-get="/reth/version" hx-ext="debug">
         <div class="flex flex-col w-full items-center">
-          <div class="h-6 w-full animate-pulse bg-gray-600 rounded-md" />
+          <div class="animate-pulse rounded-md bg-gray-600 h-6 w-2/3 mb-2" />
+          <div class="animate-pulse rounded-md bg-gray-600 h-6 w-full" />
         </div>
       </div>
     </div>
@@ -15,8 +16,8 @@ export const Main = () => (
       <div class="text-center">Prysm</div>
       <div hx-trigger="load" hx-get="/prysm/info" hx-ext="debug">
         <div class="flex flex-col items-center">
-          <div class="animate-pulse rounded-t-md bg-gray-500 w-2/3  h-6" />
-          <div class="animate-pulse rounded-md bg-gray-500 w-full h-6" />
+          <div class="animate-pulse rounded-md bg-gray-600 h-6 w-2/3 mb-2" />
+          <div class="animate-pulse rounded-md bg-gray-600 h-6 w-full" />
         </div>
       </div>
     </div>
