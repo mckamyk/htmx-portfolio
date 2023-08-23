@@ -1,4 +1,5 @@
 import {config} from 'dotenv'
+import { PrometheusReturn } from '../tools/types/prometheus'
 config()
 
 const {GRAFANA_HOST: host, GRAFANA_KEY: key} = Bun.env
@@ -6,7 +7,7 @@ if (!host || !key) throw new Error("GRAFANA_KEY and GRAFANA_HOST not found")
 
 const headers = {
   accept: 'application/json',
-  Authorization: key,
+  Authorization: `Bearer ${key}`,
   'content-type': 'application/json'
 }
 
@@ -15,32 +16,26 @@ const datasource = {
   uid: "grafanacloud-prom"
 }
 
-console.log(headers)
-
-const getClientCount = async () => {
-  const res = fetch('https://mckamyk.grafana.net/api/access-control/roles', {
+const getClientCount = async (): Promise<number | undefined> => {
+  const data = await fetch(host + '/api/ds/query', {
     headers,
     method: 'post',
     body: JSON.stringify({
-      from: 'now-1d',
+      from: 'now-3d',
       to: 'now',
       publicDashboardAccessToken: "string",
       queries: [{
         refId: 'A',
-        expr: 'reth_sync_checkpoint{job="reth-mainnet"}',
-        range: false,
+        expr: 'reth_network_connected_peers{job="reth-mainnet"}',
         datasource,
         format: "table",
         instant: true,
       }]
     })
-  })
+  }).then(r => r.json()) as PrometheusReturn
 
-  const d = await res.then(r => r.json())
-  console.log((await res).headers.get('Authorization'))
+  const vals = data.results.A.frames[0].data.values[1]
 
-  console.log(await res)
-  console.log(d)
+  return vals[0]
 }
 
-getClientCount()
