@@ -1,5 +1,5 @@
 import {config} from 'dotenv'
-import { PrometheusReturn } from '../tools/types/prometheus'
+import { promReturn } from '../tools/types/prometheus'
 config()
 
 const {GRAFANA_HOST: host, GRAFANA_KEY: key} = Bun.env
@@ -16,7 +16,7 @@ const datasource = {
   uid: "grafanacloud-prom"
 }
 
-const getClientCount = async (): Promise<number | undefined> => {
+export const getClientCount = async (): Promise<number | undefined> => {
   const data = await fetch(host + '/api/ds/query', {
     headers,
     method: 'post',
@@ -32,10 +32,11 @@ const getClientCount = async (): Promise<number | undefined> => {
         instant: true,
       }]
     })
-  }).then(r => r.json()) as PrometheusReturn
+  }).then(r => r.json()).then(promReturn.parse)
 
-  const vals = data.results.A.frames[0].data.values[1]
+  const val = data.results.A.frames[0].data.values[0][1] as number
 
-  return vals[0]
+  return val
 }
 
+getClientCount().then(console.log)
