@@ -4,6 +4,17 @@ import type { Context } from 'elysia';
 import { LoggerOptions, stdSerializers } from 'pino';
 import pretty from 'pino-pretty'
 
+
+
+export const logger = () => {
+  return (app: Elysia) => {
+    return app.derive(() => {
+      const log = pino({ formatters, serializers }, pretty({ colorize: true }))
+      return { log }
+    })
+  }
+}
+
 const serializers: LoggerOptions['serializers'] = {
   request: serializeRequest,
   err: stdSerializers.err
@@ -13,6 +24,8 @@ function serializeRequest(request: Request) {
   return {
     method: request.method,
     url: request.url,
+    referrer: request.referrer,
+    body: request.json()
   };
 }
 
@@ -36,23 +49,5 @@ function isContext(object: unknown) {
 function isRequest(object: unknown) {
   const request = object as Request;
   return request.url && request.method;
-}
-
-export const log = pino({formatters, serializers}, pretty({colorize: true, singleLine: true}))
-
-export const bundlerLog = {
-  info: (message: string) => log.info(`[BUNDLER] - ${message}`),
-  warn: (message: string) => log.warn(`[BUNDLER] - ${message}`),
-  error: (message: string) => log.error(`[BUNDLER] - ${message}`),
-  debug: (message: string) => log.debug(`[BUNDLER] - ${message}`),
-  fatal: (message: string) => log.fatal(`[BUNDLER] - ${message}`),
-}
-
-export const logger = () => {
-  return (app: Elysia) => {
-    return app.derive(() => {
-      return { log }
-    })
-  }
 }
 

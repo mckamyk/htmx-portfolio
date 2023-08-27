@@ -1,4 +1,5 @@
 {
+  "include": ["src"],
   "compilerOptions": {
     "lib": ["ESNext"],
     "module": "esnext",
@@ -9,13 +10,14 @@
     "strict": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
-    "jsx": "react",
-    "jsxFactory": "elements.createElement",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noEmit": true,
+    "jsx": "react",
+    "jsxFactory": "elements.createElement",
     "types": [
+      "src/components.d.ts",
       "bun-types" // add Bun global
     ]
   }
