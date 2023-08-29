@@ -40,6 +40,8 @@ function isRequest(object: unknown) {
 
 export const log = pino({formatters, serializers}, pretty({colorize: true, singleLine: true}))
 
+export const serverLog = log;
+
 export const bundlerLog = {
   info: (message: string) => log.info(`[BUNDLER] - ${message}`),
   warn: (message: string) => log.warn(`[BUNDLER] - ${message}`),

@@ -1,0 +1,93 @@
+{
+  "name": "sequence-erc20-arbitrum",
+  "chainId": 42161,
+  "tokenStandard": "erc20",
+  "logoURI": "https://avatars.githubusercontent.com/u/35579638?s=400&u=41e1dbfbbf6f98037069c918c9383ffb8e978fb7&v=4",
+  "keywords": ["erc20", "arbitrum"],
+  "timestamp": "2021-12-08T19:03:47.288Z",
+  "tokens": [
+    {
+      "chainId": 42161,
+      "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 6,
+      "logoURI": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "extensions": {
+        "link": "https://www.circle.com/en/usdc",
+        "description": "USDC is a fully collateralized US dollar stablecoin. USDC is the bridge between dollars and trading on cryptocurrency exchanges. The technology behind CENTRE makes it possible to exchange value between people, businesses and financial institutions just like email between mail services and texts between SMS providers. We believe by removing artificial economic borders, we can create a more inclusive global economy. ",
+        "ogImage": "https://www.circle.com/hubfs/share-USDC.png#keepProtocol",
+        "originChainId": 1,
+        "originAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+      "name": "Dai",
+      "symbol": "DAI",
+      "decimals": 18,
+      "logoURI": "https://assets.sequence.info/YBzz5Q_O/images/tokens/dai-token.png",
+      "extensions": {
+        "link": "https://makerdao.com/",
+        "description": "Dai is the native stablecoin for the Maker protocol. It is the world’s first crypto-collateralized and decentralized stablecoin, whose value is soft pegged to the US Dollar. The collateralized assets backing Dai are other cryptocurrencies instead of fiat and are held within smart contracts rather than in institutions.",
+        "ogImage": "https://makerdao.com/dai.png",
+        "originChainId": 1,
+        "originAddress": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x539bdE0d7Dbd336b79148AA742883198BBF60342",
+      "name": "Magic",
+      "symbol": "MAGIC",
+      "decimals": 18,
+      "logoURI": "https://arbiscan.io/token/images/magicv2_32.png",
+      "extensions": {
+        "link": "https://treasure.lol/",
+        "description": "MAGIC is the native token of Treasure. Treasure is the decentralized video game console connecting games and communities together through imagination, MAGIC, and NFTs.",
+        "ogImage": null
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x45D55EADf0ED5495B369E040aF0717eaFaE3b731",
+      "name": "Ellerium",
+      "symbol": "ELM",
+      "decimals": 18,
+      "logoURI": "https://arbiscan.io/token/images/talesofelleria_32.png",
+      "extensions": {
+        "link": "https://www.talesofelleria.com/",
+        "description": "Ellerium ($ELM) is a rare natural resource found within the world of Elleria. It is said to be the crystallized blessing of the Goddess and functions as the main currency throughout the whole metaverse.",
+        "ogImage": null
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+      "name": "Ether (Wrapped)",
+      "type": "ERC20",
+      "symbol": "WETH",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+      "extensions": {
+        "link": "https://weth.io/",
+        "description": "W-ETH is \"wrapped ETH\" but let's start by introducing the players. First, there's Ether token. Ether or ETH is the native currency built on the Ethereum blockchain.\r\nSecond, there are alt tokens. When a dApp (decentralized app) is built off of the Ethereum Blockchain it usually implements it’s own form of Token. Think Augur’s REP Token, or Bancor's BNT Token. Finally the ERC-20 standard. ERC20 is a standard developed after the release of ETH that defines how tokens are transferred and how to keep a consistent record of those transfers among tokens in the Ethereum Network."
+      }
+    },
+    {
+      "chainId": 42161,
+      "address": "0xbcf339df10d78f2b44aa760ead0f715a7a7d7269",
+      "name": "Guardian GUARD",
+      "type": "ERC20",
+      "symbol": "GUARD",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/17995/small/LS_wolfDen_logo.0025_Light_200x200.png?1665110310",
+      "extensions": {
+        "link": "https://guardfdn.com/",
+        "description": "Guardian is for purpose driven companies and projects building and contributing to the web3 economy."
+      }
+    }
+  ],
+  "version": { "major": 1, "minor": 0, "patch": 0 }
+}

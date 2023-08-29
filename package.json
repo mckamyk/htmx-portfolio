@@ -17,11 +17,13 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@0xsequence/token-directory": "^1.1.14",
     "@elysiajs/html": "^0.6.0",
     "@elysiajs/static": "^0.6.0",
     "@elysiajs/swagger": "^0.6.1",
     "@preact/compat": "^17.1.2",
     "chokidar": "^3.5.3",
+    "dotenv": "^16.3.1",
     "elysia": "^0.6.11",
     "glob": "^10.3.3",
     "htmx.org": "^1.9.5",
@@ -29,6 +31,8 @@
     "pino-pretty": "^10.2.0",
     "preact": "^10.17.1",
     "preact-custom-element": "^4.2.1",
-    "typed-html": "^3.0.1"
+    "typed-html": "^3.0.1",
+    "viem": "^1.7.0",
+    "zod": "^3.22.2"
   }
 }
