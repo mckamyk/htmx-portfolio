@@ -1,4 +1,3 @@
-import Elysia from 'elysia'
 import * as elements from 'typed-html'
 import { getLatestRethVersion } from '../connectors/reth'
 

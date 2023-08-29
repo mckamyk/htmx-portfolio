@@ -1,5 +1,4 @@
 import {config} from 'dotenv'
-import { client } from './viem'
 config()
 
 const rethHost = process.env.EXEC_NODE
