@@ -14,7 +14,12 @@ export const maticClient = createPublicClient({
 })
 
 export const arbitrumClient = createPublicClient({
-  transport: http(Bun.env.MATIC_URL),
+  transport: http(Bun.env.ARBITRUM_URL),
   chain: arbitrum
 })
 
+export const chains = {
+  mainnet: mainnetClient,
+  matic: maticClient,
+  arbitrum: arbitrumClient
+}

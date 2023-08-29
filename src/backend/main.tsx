@@ -1,9 +1,12 @@
 import * as elements from 'typed-html'
 import { statusRoutes } from './status/routes'
 import { portfolioRoutes } from './portfolio/routes'
+import { AccountBalances, Accounts } from './portfolio/accounts'
+import Elysia from 'elysia'
 
-export const registerRoute = (app: any) => {
+export const registerRoute = (app: Elysia) => {
   app.get("/main", Main)
+  app.get("/account/balances/:address", ({params}) => AccountBalances(params.address as `0x${string}`))
   statusRoutes(app)
   portfolioRoutes(app)
 }
@@ -32,7 +35,7 @@ const Main = () => (
       </div>
     </div>
 
-    <div hx-get="/portfolio" hx-trigger="load" />
+    <Accounts />
   </div>
 )
 

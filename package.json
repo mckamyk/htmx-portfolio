@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "devv": "bunx concurrently 'bun build:w' 'bun start:w'",
-    "start": "bun run src/index.ts",
-    "start:w": "bun run --hot src/index.ts",
-    "build": "bun run src/bundle.ts",
-    "build:w": "bun run src/bundle.ts --watch"
+    "backend": "bun run src/index.ts",
+    "backend:w": "bun run --watch src/index.ts",
+    "frontend": "bun run src/bundle.ts",
+    "frontend:w": "bun run src/bundle.ts --watch"
   },
   "devDependencies": {
     "@types/preact-custom-element": "^4.0.1",
