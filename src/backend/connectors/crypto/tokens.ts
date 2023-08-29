@@ -3,7 +3,8 @@ import {mainnetClient, arbitrumClient, maticClient} from '../viem'
 import { ERC20 } from './types'
 import { serverLog } from '../../../logger'
 import {readContract} from 'viem/contract'
-import { parseAbi, parseAbiItem } from 'viem'
+import { parseAbi } from 'viem'
+import { formatWithDecimals } from '../../tools/tokenFormat'
 
 const myAddress = '0xAB82910FE0a55E4Aa680DBc08bae45113566c309'
 
@@ -27,7 +28,12 @@ const getBalances = async () => {
 
   const clients = [arbitrumClient, mainnetClient, maticClient]
 
-  const proms = ts.map(t => {
+  type returnType = {
+    token: typeof ts[0],
+    balance: bigint
+  }
+
+  const proms = ts.map(async t => {
     const client = clients.find(c => c.chain.id === t.chainId) as any
     const rsp = readContract(client, {
         address: t.address as `0x${string}`,
@@ -36,7 +42,10 @@ const getBalances = async () => {
         args: [myAddress]
     })
 
-    return rsp
+    return {
+      token: t,
+      balance: await rsp
+    }
   })
 
   const settled = await Promise.allSettled(proms)
@@ -53,8 +62,12 @@ const getBalances = async () => {
   return resolved.map(r => {
     if (r.status !== 'fulfilled') return null
     return r.value
-  }).filter(v => !!v) as bigint[]
+  }).filter(v => v && v.balance) as returnType[]
 }
 
-getBalances();
+const bals = await getBalances()
+
+bals?.forEach(b => {
+  console.log(b.token.name, b.token.chainId, formatWithDecimals(b.balance, b.token.decimals || 0))
+})
 
