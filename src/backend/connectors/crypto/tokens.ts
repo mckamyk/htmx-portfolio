@@ -6,6 +6,7 @@ import {readContract} from 'viem/contract'
 import { parseAbi } from 'viem'
 import { formatWithDecimals } from '../../tools/tokenFormat'
 import { getTokenPrices } from './prices'
+import { isArrayGuard } from '../../tools/typeGuards'
 
 const mainnetToks = tokenLists.find(l => l.chainId === 1)?.tokens
 const maticToks = tokenLists.find(l => l.chainId === 137)?.tokens
@@ -67,10 +68,28 @@ export const getBalances = async (account: `0x${string}`): Promise<TokenBalance[
 
   const prices = await getTokenPrices(withBalance)
 
+  if (!prices) return withBalance
+
   const withPrices = withBalance.map(t => {
-    if (!t.token.symbol) return t
-    const price = prices?.data[t.token.symbol].quote[t.token.symbol].price
-    return {...t, price}
+    const symbol = t.token.symbol
+    if (!symbol) return t
+
+    const priceData = prices.data[symbol]
+
+    if (isArrayGuard(priceData)) {
+      priceData.sort((a, b) => {
+        const mka = a.quote['USD'].market_cap
+        const mkb = b.quote['USD'].market_cap
+
+        return mkb-mka
+      })
+
+      const quote = priceData[0].quote["USD"]
+      return {...t, price: quote.price, delta: quote.percent_change_24h }
+    } else {
+      const quote = priceData.quote["USD"]
+      return {...t, price: quote.price, delta: quote.percent_change_24h }
+    }
   })
 
   return withPrices

@@ -25,12 +25,11 @@ export const getTokenPrices = async (tokens: TokenBalance[]) => {
 
   const params = new URLSearchParams({
     symbol,
-    conver: "USD"
+    convert: "USD"
   })
 
-  console.log(`Fetching prices: ${symbol}`)
   const result = await fetch(`${host}/v2/cryptocurrency/quotes/latest?` + params, {headers})
-    .then(r => r.json()).then(cmcPriceReturn.parse).catch(serverLog.error)
+    .then(r => r.json()).then(cmcPriceReturn.parse).catch(e => serverLog.error(JSON.stringify(e, undefined, 2)))
 
   return result
 }

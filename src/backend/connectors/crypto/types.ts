@@ -6,7 +6,8 @@ export type TokenBalance = {
   token: ERC20,
   balance: bigint,
   formatedBalance: () => number,
-  price?: number
+  price?: number,
+  delta?: number,
 }
 
 export const erc20 = z.object({
@@ -42,29 +43,33 @@ export type TokenList = z.infer<typeof tokenList>
 const cmcResponseStatus = z.object({
   timestamp: z.date({coerce: true}),
   "error_code": z.number().min(0),
-  "error_message": z.string(),
+  "error_message": z.string().nullable(),
   elapsed: z.number(),
   "credit_count": z.number().min(0),
 })
 
-export const cmcPriceReturn = z.object({
-  status: cmcResponseStatus,
-  data: z.record(z.string(), z.object({
+const cmcPriceInfo = z.object({
     "id": z.number(),
     "name": z.string(),
     "symbol": z.string(),
     "slug": z.string(),
     "is_active": z.number(),
-    "is_fiat": z.number(),
+    "is_fiat": z.number().nullable(),
     "circulating_supply": z.number(),
     "total_supply": z.number(),
-    "max_supply": z.number(),
+    "max_supply": z.number().nullable(),
     "date_added": z.date({coerce: true}),
     "num_market_pairs": z.number(),
     "cmc_rank": z.number(),
     "last_updated": z.date({coerce: true}),
-    "tags": z.array(z.string()),
-    "platform": z.null(),
+    "tags": z.array(z.union([z.string(), z.record(z.string(), z.any())])),
+    "platform": z.object({
+      id: z.number().min(0),
+      name: z.string(),
+      symbol: z.string(),
+      slug: z.string(),
+      token_address: z.string().startsWith('0x'),
+    }).nullable(),
     "self_reported_circulating_supply": z.null(),
     "self_reported_market_cap": z.null(),
     "quote": z.record(z.string(), z.object({
@@ -80,7 +85,15 @@ export const cmcPriceReturn = z.object({
         "fully_diluted_market_cap": z.number(),
         "last_updated": z.date({coerce: true})
     }))
-  }))
+})
+
+export type CmcPriceInfo = z.infer<typeof cmcPriceInfo>
+
+export const cmcPriceReturn = z.object({
+  status: cmcResponseStatus,
+  data: z.record(z.string(),
+    z.union([cmcPriceInfo, z.array(cmcPriceInfo)])
+  )
 })
 
 export type CmcPriceReturn = z.infer<typeof cmcPriceReturn>

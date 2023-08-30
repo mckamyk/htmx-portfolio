@@ -30,7 +30,14 @@ export const AccountBalances = async (account:`0x${string}`) => {
         return (
           <div class="border-2 border-gray-900 mb-4 rounded-md overflow-clip">
             <div class="px-2 py-1 bg-gray-900 text-lg">{client.chain.name}</div>
-            {relevantBalances.map(b => (
+            {relevantBalances.map(b => {
+              let value: string | undefined = undefined
+              
+              if (b.price) {
+                value = (Math.round(b.formatedBalance() * b.price * 100)/100).toFixed(2)
+              }
+
+              return (
               <div class="h-12 flex items-center gap-4 pl-2">
                 <img src={b.token.logoURI} class="h-8 w-8" />
                 <div>
@@ -40,8 +47,10 @@ export const AccountBalances = async (account:`0x${string}`) => {
                   ) : ''}
                 </div>
                 <div>{b.formatedBalance().toLocaleString()}</div>
+                {value ? <div>{`$${value}`}</div> : ''}
+                {b.delta ? <div>{b.delta > 0 ? '+' : '-'}{Math.abs(b.delta).toFixed(2)}%</div> : ''}
               </div>
-            ))}
+            )})}
           </div>
         )
       })}
