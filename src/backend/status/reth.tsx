@@ -1,5 +1,5 @@
-import React from 'react'
 import { getLatestRethVersion } from '../connectors/reth'
+import React from 'react';
 
 export const RethInfo = async () => {
   const version = await getLatestRethVersion()

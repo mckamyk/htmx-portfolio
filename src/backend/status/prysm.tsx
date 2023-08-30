@@ -1,5 +1,5 @@
-import React from 'react';
 import { getAltPrysmSync, getLatestConsensusVersion, getPrysmSync } from '../connectors/prysm'
+import React from 'react';
 
 export const PrysmInfo = async () => {
   const [version, syncInfo, altSyncInfo] = await Promise.all([

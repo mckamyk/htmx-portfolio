@@ -9,3 +9,7 @@ export const isNotNull = <T>(arg: T | null): arg is T => {
 export const isArrayGuard = <T>(arg: T[] | T): arg is T[] => {
   return Array.isArray(arg)
 }
+
+export const makePromise = <T>(arg: Promise<T> | T): Promise<T> => {
+  return Promise.resolve(arg)
+}

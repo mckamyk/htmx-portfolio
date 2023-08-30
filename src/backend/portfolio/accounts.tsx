@@ -1,6 +1,6 @@
 import { getBalances } from '../connectors/crypto/tokens'
-import React from 'react'
 import { chains } from '../connectors/viem'
+import React from 'react';
 
 const address: `0x${string}` = "0xab82910fe0a55e4aa680dbc08bae45113566c309"
 
@@ -28,9 +28,9 @@ export const AccountBalances = async (account:`0x${string}`) => {
         if (relevantBalances.length === 0) return ''
 
         return (
-          <div class="border-2 border-gray-900 mb-4 rounded-md overflow-clip">
-            <div class="px-2 py-1 bg-gray-900 text-lg">{client.chain.name}</div>
-            {relevantBalances.map(b => {
+          <div key={client.key} className="border-2 border-gray-900 mb-4 rounded-md overflow-clip">
+            <div className="px-2 py-1 bg-gray-900 text-lg">{client.chain.name}</div>
+            {relevantBalances.map((b, i) => {
               let value: string | undefined = undefined
               
               if (b.price) {
@@ -38,8 +38,8 @@ export const AccountBalances = async (account:`0x${string}`) => {
               }
 
               return (
-              <div class="h-12 flex items-center gap-4 pl-2">
-                <img src={b.token.logoURI} class="h-8 w-8" />
+              <div key={i} className="h-12 flex items-center gap-4 pl-2">
+                <img src={b.token.logoURI} className="h-8 w-8" />
                 <div>
                   <div>{b.token.symbol}</div>
                   {b.token.symbol !== b.token.name ? (

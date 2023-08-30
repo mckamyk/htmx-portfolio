@@ -4,6 +4,7 @@ import { staticPlugin } from '@elysiajs/static'
 import { logger } from './logger'
 import { Main, registerRoute } from './backend/main'
 import ReactDomServer from 'react-dom/server'
+import { makePromise } from './backend/tools/typeGuards'
 
 export const app = new Elysia()
   .use(swagger())
@@ -21,10 +22,13 @@ export const app = new Elysia()
   })
 
 app.group("", app => {
-  registerRoute(app as unknown as Elysia);
-  app.on('afterHandle', (handler, foo ) => {
-    console.log(foo)
+  app.on('afterHandle', async (_, foo ) => {
+    const content = await foo
+    const rsp = (content: string) => new Response(content, {headers: {'content-type': 'text/html'}})
+    if (typeof foo === typeof "") return rsp(content)
+    return rsp(ReactDomServer.renderToString(content))
   })
+  registerRoute(app as unknown as Elysia);
   return app
 })
 

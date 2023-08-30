@@ -2,11 +2,10 @@ import { statusRoutes } from './status/routes'
 import { portfolioRoutes } from './portfolio/routes'
 import { AccountBalances, Accounts } from './portfolio/accounts'
 import React from 'react'
-import ReactDomServer from 'react-dom/server'
 import type Elysia from 'elysia'
 
 export const registerRoute = (app: Elysia) => {
-  app.get("/account/balances/:address", async ({params}) => ReactDomServer.renderToString(await AccountBalances(params.address as `0x${string}`)))
+  app.get("/account/balances/:address", ({params}) => AccountBalances(params.address as `0x${string}`))
   statusRoutes(app)
   portfolioRoutes(app)
 }
