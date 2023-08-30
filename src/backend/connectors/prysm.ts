@@ -44,3 +44,10 @@ export const getPrysmSync = async () => {
   return PrysmSyncResponseInternal.parse(data);
 }
 
+export const getAltPrysmSync = async () => {
+  const data = await fetch('http://localhost:3501'+ '/eth/v1/node/syncing', {headers}).then(r => r.json())
+
+  return PrysmSyncResponseInternal.parse(data);
+}
+
+

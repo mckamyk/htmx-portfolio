@@ -23,7 +23,7 @@ export const app = new Elysia()
     )
   })
 
-registerRoute(app);
+registerRoute(app as unknown as Elysia);
 
 app.listen(3000)
 

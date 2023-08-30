@@ -32,8 +32,3 @@ export const getLatestRethVersion = async (): Promise<string> => {
 export const getRethMetrics = async () => {
 }
 
-const getPrysmSyncMetrics = async () => {
-  return {
-
-  }
-}

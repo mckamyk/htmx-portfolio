@@ -1,10 +1,11 @@
 import {tokenLists} from './tokenDirectory'
 import {mainnetClient, arbitrumClient, maticClient} from '../viem'
-import { ERC20 } from './types'
+import { ERC20, TokenBalance } from './types'
 import { serverLog } from '../../../logger'
 import {readContract} from 'viem/contract'
 import { parseAbi } from 'viem'
 import { formatWithDecimals } from '../../tools/tokenFormat'
+import { getTokenPrices } from './prices'
 
 const mainnetToks = tokenLists.find(l => l.chainId === 1)?.tokens
 const maticToks = tokenLists.find(l => l.chainId === 137)?.tokens
@@ -17,10 +18,8 @@ if (!mainnetToks || !maticToks || !arbitrumToks) {
 
 const tokensToGet = ['USDC', 'DAI', 'WETH', 'ENS', 'USDT']
 
-export type TokenBalance = {
-  token: ERC20,
-  balance: bigint,
-  formatedBalance: () => number
+const isNotNull = <T>(arg: T | null): arg is T => {
+  return arg !== null
 }
 
 export const getBalances = async (account: `0x${string}`): Promise<TokenBalance[]> => {
@@ -39,7 +38,7 @@ export const getBalances = async (account: `0x${string}`): Promise<TokenBalance[
         functionName: 'balanceOf',
         abi: parseAbi(['function balanceOf(address) view returns (uint256)']),
         args: [account]
-    }).catch(e => serverLog.error(`Token Balance lookup failed for ${t.name} (${t.address}) on chain ${t.chainId}`))
+    }).catch(() => serverLog.error(`Token Balance lookup failed for ${t.name} (${t.address}) on chain ${t.chainId}`))
 
     if (!bal) return null
 
@@ -61,9 +60,19 @@ export const getBalances = async (account: `0x${string}`): Promise<TokenBalance[
     serverLog.error(`Token balance lookup failed: ${p.reason}`)
   })
 
-  return resolved.map(r => {
+  const withBalance = resolved.map(r => {
     if (r.status !== 'fulfilled') return null
     return r.value
-  }).filter(v => v && v.balance) as TokenBalance[]
+  }).filter(isNotNull)
+
+  const prices = await getTokenPrices(withBalance)
+
+  const withPrices = withBalance.map(t => {
+    if (!t.token.symbol) return t
+    const price = prices?.data[t.token.symbol].quote[t.token.symbol].price
+    return {...t, price}
+  })
+
+  return withPrices
 }
 

@@ -1,20 +1,27 @@
 import * as elements from 'typed-html'
-import { getLatestConsensusVersion, getPrysmSync } from '../connectors/prysm'
+import { getAltPrysmSync, getLatestConsensusVersion, getPrysmSync } from '../connectors/prysm'
 
 export const PrysmInfo = async () => {
-  const [version, syncInfo] = await Promise.all([
+  const [version, syncInfo, altSyncInfo] = await Promise.all([
     getLatestConsensusVersion(),
-    getPrysmSync()
+    getPrysmSync(),
+    getAltPrysmSync()
   ])
 
-  const {head_slot, sync_distance} = syncInfo
-  const total = sync_distance + head_slot;
-  const pct = Math.round((head_slot/total)*100)
+  const calculatePrysmSync = (info: typeof syncInfo) => {
+    const {head_slot, sync_distance} = info
+    const total = sync_distance + head_slot;
+    return Math.round((head_slot/total)*100)
+  }
+
+  const pct = calculatePrysmSync(syncInfo)
+  const altpct = calculatePrysmSync(altSyncInfo)
 
   return (
     <div class="w-full">
       <PrysmVersion version={version} />
       <PrysmSync pct={pct} />
+      <PrysmSync pct={altpct} />
     </div>
   )
 }

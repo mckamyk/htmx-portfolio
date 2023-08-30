@@ -3,7 +3,7 @@
   "module": "src/index.tsx",
   "type": "module",
   "scripts": {
-    "devv": "bunx concurrently 'bun build:w' 'bun start:w'",
+    "devv": "bunx concurrently 'bun backend:w' 'bun frontend:w'",
     "backend": "bun run src/index.ts",
     "backend:w": "bun run --watch src/index.ts",
     "frontend": "bun run src/bundle.ts",

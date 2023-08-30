@@ -1,12 +1,6 @@
 import * as elements from 'typed-html'
-import { TokenBalance, getBalances } from '../connectors/crypto/tokens'
+import { getBalances } from '../connectors/crypto/tokens'
 import { chains } from '../connectors/viem'
-
-const chainIds =  {
-  mainnet: 1,
-  matic: 137,
-  arbitrum: 42126,
-}
 
 const address: `0x${string}` = "0xab82910fe0a55e4aa680dbc08bae45113566c309"
 
