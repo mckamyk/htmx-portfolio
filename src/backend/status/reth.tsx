@@ -1,12 +1,12 @@
-import * as elements from 'typed-html'
+import React from 'react'
 import { getLatestRethVersion } from '../connectors/reth'
 
 export const RethInfo = async () => {
   const version = await getLatestRethVersion()
 
   return (
-    <div class="w-full">
-      <div class="text-center mb-2">{version}</div>
+    <div className="w-full">
+      <div className="text-center mb-2">{version}</div>
       <RethSync />
     </div>
   )
@@ -17,7 +17,7 @@ const RethSync = () => {
   // Progress should be 0 -> Current block
 
   return (
-    <div class="text-center bg-gray-600 rounded-md">
+    <div className="text-center bg-gray-600 rounded-md">
       Waiting on Prysm Sync
     </div>
   )

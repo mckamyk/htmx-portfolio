@@ -1,13 +1,12 @@
 import { Elysia } from 'elysia'
-import { html } from '@elysiajs/html'
 import { swagger } from '@elysiajs/swagger'
 import { staticPlugin } from '@elysiajs/static'
 import { logger } from './logger'
-import { registerRoute } from './backend/main'
+import { Main, registerRoute } from './backend/main'
+import ReactDomServer from 'react-dom/server'
 
 export const app = new Elysia()
   .use(swagger())
-  .use(html())
   .use(logger())
   .use(staticPlugin({
     assets: 'dist',
@@ -16,14 +15,18 @@ export const app = new Elysia()
   .on('beforeHandle', ctx => {
     ctx.log.info(ctx.request)
   })
-  //@ts-ignore
-  .get('/', ({ html }) => {
-    return html(
-      BaseHtml
-    )
+  .get('/', () => {
+    const content = BaseHtml.replace("REPLACE_ME", ReactDomServer.renderToString(Main()))
+    return new Response(content, {headers: {'content-type': 'text/html'}})
   })
 
-registerRoute(app as unknown as Elysia);
+app.group("", app => {
+  registerRoute(app as unknown as Elysia);
+  app.on('afterHandle', (handler, foo ) => {
+    console.log(foo)
+  })
+  return app
+})
 
 app.listen(3000)
 
@@ -43,7 +46,7 @@ const BaseHtml = `
       <script src="https://unpkg.com/hyperscript.org"></script>
     </head>
     <body>
-      <div hx-trigger="load" hx-get="/main" />
+      REPLACE_ME
     </body>
   </html>
 `

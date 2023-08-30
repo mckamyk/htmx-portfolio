@@ -15,9 +15,9 @@
     "allowJs": true,
     "noEmit": true,
     "jsx": "react",
-    "jsxFactory": "elements.createElement",
+    "jsxImportSource": "react",
     "types": [
-      "src/components.d.ts",
+      "react",
       "bun-types" // add Bun global
     ]
   }

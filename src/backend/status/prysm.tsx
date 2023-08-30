@@ -1,4 +1,4 @@
-import * as elements from 'typed-html'
+import React from 'react';
 import { getAltPrysmSync, getLatestConsensusVersion, getPrysmSync } from '../connectors/prysm'
 
 export const PrysmInfo = async () => {
@@ -18,7 +18,7 @@ export const PrysmInfo = async () => {
   const altpct = calculatePrysmSync(altSyncInfo)
 
   return (
-    <div class="w-full">
+    <div className="w-full">
       <PrysmVersion version={version} />
       <PrysmSync pct={pct} />
       <PrysmSync pct={altpct} />
@@ -28,16 +28,16 @@ export const PrysmInfo = async () => {
 
 const PrysmVersion = ({version}: {version: string}) => {
   return (
-    <div class="text-center mb-2">{version}</div>
+    <div className="text-center mb-2">{version}</div>
   )
 }
 
 const PrysmSync = ({pct}: {pct: number}) => {
   return (
-    <div class={`relative rounded-md overflow-clip h-6 w-full]`}>
-      <div class={`bg-gray-600 w-full h-6`} />
-      <div class={`absolute left-0 top-0 w-[${pct}%] bg-sky-600 h-6 animate-pulse`} />
-      <div class="absolute left-0 top-0 w-full text-center">{`${pct}%`}</div>
+    <div className={`relative rounded-md overflow-clip h-6 w-full]`}>
+      <div className={`bg-gray-600 w-full h-6`} />
+      <div className={`absolute left-0 top-0 w-[${pct}%] bg-sky-600 h-6 animate-pulse`} />
+      <div className="absolute left-0 top-0 w-full text-center">{`${pct}%`}</div>
     </div>
   )
 }

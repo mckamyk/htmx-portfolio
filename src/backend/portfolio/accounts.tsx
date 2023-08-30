@@ -1,14 +1,14 @@
-import * as elements from 'typed-html'
 import { getBalances } from '../connectors/crypto/tokens'
+import React from 'react'
 import { chains } from '../connectors/viem'
 
 const address: `0x${string}` = "0xab82910fe0a55e4aa680dbc08bae45113566c309"
 
 export const Accounts = () => {
   return (
-    <div class="flex justify-center"> 
-      <div class="max-w-[1200px] grow bg-gray-800 rounded-lg h-96 mt-8 mx-4 px-4 py-2">
-        <div class="text-lg">Account Balances: {address}</div>
+    <div className="flex justify-center"> 
+      <div className="max-w-[1200px] grow bg-gray-800 rounded-lg h-96 mt-8 mx-4 px-4 py-2">
+        <div className="text-lg">Account Balances: {address}</div>
 
         <div hx-get="/account/balances/0xab82910fe0a55e4aa680dbc08bae45113566c309" hx-trigger="load" />
       </div>
@@ -43,7 +43,7 @@ export const AccountBalances = async (account:`0x${string}`) => {
                 <div>
                   <div>{b.token.symbol}</div>
                   {b.token.symbol !== b.token.name ? (
-                    <div class="text-sm">{b.token.name}</div>
+                    <div className="text-sm">{b.token.name}</div>
                   ) : ''}
                 </div>
                 <div>{b.formatedBalance().toLocaleString()}</div>
