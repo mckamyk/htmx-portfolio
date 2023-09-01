@@ -3,8 +3,16 @@ import { swagger } from '@elysiajs/swagger'
 import { staticPlugin } from '@elysiajs/static'
 import { logger } from './logger'
 import { Main, registerRoute } from './backend/main'
-import ReactDomServer from 'react-dom/server'
-import { makePromise } from './backend/tools/typeGuards'
+import {renderToString} from 'react-dom/server'
+
+export const rootPage = (MainComponent: () => React.JSX.Element) => () => {
+  const content = BaseHtml.replace("REPLACE_ME", renderToString(MainComponent()))
+  return new Response(content, {headers: {'content-type': 'text/html'}})
+}
+
+export const childPage = (MainComponent: () => (React.JSX.Element | Promise<React.JSX.Element>)) => async () => {
+  return new Response(renderToString(await MainComponent()), {headers: {'content-type': 'text/html; charset=utf-8'}})
+}
 
 export const app = new Elysia()
   .use(swagger())
@@ -16,21 +24,10 @@ export const app = new Elysia()
   .on('beforeHandle', ctx => {
     ctx.log.info(ctx.request)
   })
-  .get('/', () => {
-    const content = BaseHtml.replace("REPLACE_ME", ReactDomServer.renderToString(Main()))
-    return new Response(content, {headers: {'content-type': 'text/html'}})
-  })
+  .get('/', rootPage(Main))
+  
 
-app.group("", app => {
-  app.on('afterHandle', async (_, foo ) => {
-    const content = await foo
-    const rsp = (content: string) => new Response(content, {headers: {'content-type': 'text/html'}})
-    if (typeof foo === typeof "") return rsp(content)
-    return rsp(ReactDomServer.renderToString(content))
-  })
-  registerRoute(app as unknown as Elysia);
-  return app
-})
+registerRoute(app as unknown as Elysia);
 
 app.listen(3000)
 

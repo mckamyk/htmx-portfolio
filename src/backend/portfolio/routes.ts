@@ -1,6 +1,8 @@
 import Elysia from "elysia";
-import { Accounts } from "./accounts";
+import { AccountBalances, Accounts } from "./accounts";
+import { childPage } from "../..";
 
 export const portfolioRoutes = (app: Elysia) => {
-  app.get('/portfolio', Accounts)
+  app.get('/portfolio', childPage(Accounts))
+  app.get("/account/balances/:address", ({params}) => childPage(() => AccountBalances(params.address as `0x${string}`))())
 }
