@@ -9,8 +9,17 @@ export const registerRoute = (app: Elysia) => {
   portfolioRoutes(app)
 }
 
-export const Main = () => (
-  <div className="mt-8">
-    <Accounts />
-  </div>
+const Main = () => (
+  <>
+    <div className="mt-2 flex justify-center">
+      <div className="w-[800px]">
+        <a className="text-blue-500 underline" href="/status">Status</a>
+      </div>
+    </div>
+    <div className="mt-6">
+      <Accounts />
+    </div>
+  </>
 )
+
+export {Main}
