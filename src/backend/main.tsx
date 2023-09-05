@@ -2,10 +2,10 @@ import { statusRoutes } from './status/routes'
 import { portfolioRoutes } from './portfolio/routes'
 import { Accounts } from './portfolio/accounts'
 import React from 'react'
-import type Elysia from 'elysia'
 import Header from './header'
+import { App } from '..'
 
-export const registerRoute = (app: Elysia) => {
+export const registerRoute = (app: App) => {
   statusRoutes(app)
   portfolioRoutes(app)
 }

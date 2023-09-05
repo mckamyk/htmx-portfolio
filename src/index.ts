@@ -5,9 +5,11 @@ import { logger } from './logger'
 import { Main, registerRoute } from './backend/main'
 import {renderToString} from 'react-dom/server'
 import { registerNonceRoute } from './backend/tools/nonce'
+import {cookie as elysiaCookie} from '@elysiajs/cookie'
 import {trpc} from '@elysiajs/trpc'
 import { trpcRouter } from './backend/tools/trpc'
-import {cookie} from '@elysiajs/cookie'
+import {CreateExpressContextOptions} from '@trpc/server/adapters/express'
+import { inferAsyncReturnType } from '@trpc/server'
 
 export const rootPage = (MainComponent: () => React.JSX.Element) => () => {
   const content = BaseHtml.replace("REPLACE_ME", renderToString(MainComponent()))
@@ -18,13 +20,39 @@ export const childPage = (MainComponent: () => (React.JSX.Element | Promise<Reac
   return new Response(renderToString(await MainComponent()), {headers: {'content-type': 'text/html; charset=utf-8'}})
 }
 
+const createContext = ({req, res}: CreateExpressContextOptions) => {
+  const setCookie = (name: string, value: string) => {
+    res.cookie(name, value)
+  }
+
+  const getCookies = () => {
+    return req.cookies
+  }
+
+  return {
+    setCookie, getCookies
+  }
+}
+
+export type TrpcContext = inferAsyncReturnType<typeof createContext>
+
 export const app = new Elysia()
   .use(swagger())
   .use(logger())
-  .use(cookie())
+  .use(elysiaCookie({
+  }))
   .use(app => {
     return app
   })
+  .use(trpc(trpcRouter, {
+    createContext({req, resHeaders}) {
+      const cookie = req.headers.get('cookie')
+      console.log(cookie)
+      return {
+        resHeaders
+      }
+    }
+  }))
   .use(staticPlugin({
     assets: 'dist',
     alwaysStatic: true,
@@ -34,9 +62,10 @@ export const app = new Elysia()
   })
   .get('/', rootPage(Main))
   
+export type App = typeof app
 
-registerRoute(app as unknown as Elysia);
-registerNonceRoute(app as unknown as Elysia);
+registerRoute(app);
+registerNonceRoute(app);
 
 app.listen(3000)
 

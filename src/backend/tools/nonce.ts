@@ -1,7 +1,8 @@
 import Elysia, {t} from 'elysia';
 import {generateNonce} from 'siwe'
+import { App } from '../..';
 
-export const registerNonceRoute = (app: Elysia) => {
+export const registerNonceRoute = (app: App) => {
   app.get('/nonce', getNonce)
   app.post('/verify', verify, {body: t.Object({
     message: t.String(),
