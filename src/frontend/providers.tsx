@@ -1,12 +1,12 @@
-import type { ComponentChildren } from "preact"
-import React from 'react';
 import { WagmiConfig } from "wagmi"
+import React from 'react';
 import {config} from './wagmi/config'
+import { ReactNode } from "react"
 
-export const Providers = ({children}: {children: ComponentChildren}) => {
+export const Providers = ({children}: {children: ReactNode}) => {
   return (
     <WagmiConfig config={config}>
-      <div>hi</div>
+      {children}
     </WagmiConfig>
   )
 }

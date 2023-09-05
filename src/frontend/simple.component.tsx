@@ -10,7 +10,7 @@ const Simple = ({htmlProp}: JSX.SimpleElement) => {
     <div className="border-4 border-sky-700 p-4 rounded-md">
       <div>This is a Preact Web Component!</div>
       <div>Prop from HTML: {htmlProp}</div>
-      <div class="flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <div> useState Counter: {counter}</div>
         <button className="bg-sky-800 rounded-md px-2 py-1" onClick={() => setCounter(counter + 1)}>Add</button>
       </div>

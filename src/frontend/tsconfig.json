@@ -2,10 +2,13 @@
   "extends": "../../tsconfig.json",
   "include": [
     ".",
+    "../components.d.ts"
   ],
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxFactory": null,
-    "jsxImportSource": "preact"
+    // WAGMI is having an issue with Preact, falling back to React for now
+    // "jsx": "react-jsx",
+    // "jsxFactory": null,
+    // "jsxImportSource": "preact"
+    // "jsxImportSource": "react"
   }
 }

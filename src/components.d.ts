@@ -5,6 +5,6 @@ declare namespace JSX {
 
   interface IntrinsicElements {
     simpleEl: SimpleElement
-    fooComponent: {}
+    "wagmi-login": {}
   }
 }

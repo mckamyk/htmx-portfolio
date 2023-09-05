@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia'
 import { swagger } from '@elysiajs/swagger'
 import { staticPlugin } from '@elysiajs/static'
-import { logger } from './logger'
+import { logger, serverLog } from './logger'
 import { Main, registerRoute } from './backend/main'
 import {renderToString} from 'react-dom/server'
 import { registerNonceRoute } from './backend/tools/nonce'
@@ -41,9 +41,6 @@ export const app = new Elysia()
   .use(logger())
   .use(elysiaCookie({
   }))
-  .use(app => {
-    return app
-  })
   .use(trpc(trpcRouter, {
     createContext({req, resHeaders}) {
       const cookie = req.headers.get('cookie')
@@ -59,6 +56,9 @@ export const app = new Elysia()
   }))
   .on('beforeHandle', ctx => {
     ctx.log.info(ctx.request)
+  })
+  .on('error', ctx => {
+    serverLog.error(`${ctx.code} - ${ctx.request.url}`)
   })
   .get('/', rootPage(Main))
   

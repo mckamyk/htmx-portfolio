@@ -1,12 +1,9 @@
 import {createConfig, configureChains, mainnet} from 'wagmi'
-import {alchemyProvider} from 'wagmi/providers/alchemy'
+import {publicProvider} from 'wagmi/providers/public'
 
 import {InjectedConnector} from 'wagmi/connectors/injected'
 
-const alchemyKey = Bun.env.ALCHEMY_KEY
-if (!alchemyKey) throw new Error("No alchemy key!")
-
-const {chains, publicClient} = configureChains([mainnet], [alchemyProvider({apiKey: Bun.env.ALCHEMY_KEY!})])
+const {chains, publicClient} = configureChains([mainnet], [publicProvider()])
 
 export const config = createConfig({
   publicClient,

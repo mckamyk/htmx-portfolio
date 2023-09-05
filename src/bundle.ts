@@ -25,17 +25,18 @@ async function build(path?: string, mode?: "added" | "updated" | "deleted") {
   }
 
   const files = await glob('src/frontend/**/*.component.tsx');
-
-  const t = Date.now()
+  const t = new Date().getTime()
 
   const output = await Bun.build({
     entrypoints: files,
+    root: 'src/frontend/',
     outdir: 'dist',
     minify: false,
     splitting: true,
-    // sourcemap: 'inline'
+    sourcemap: 'external',
+    target: 'browser',
   })
-  
+
   bundlerLog.info(`${output.outputs.length} components built in ${Date.now()-t}ms.`)
   output.logs.filter(l => l.level === 'error').forEach(err => {
     bundlerLog.error(`\t Build Error: ${err.position?.file}-L${err.position?.line} -- ${err.message}`)

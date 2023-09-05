@@ -16,6 +16,7 @@
     "noEmit": true,
     "jsx": "react",
     "types": [
+      "./src/components.d.ts",
       "bun-types" // add Bun global
     ]
   }
