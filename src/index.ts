@@ -4,6 +4,10 @@ import { staticPlugin } from '@elysiajs/static'
 import { logger } from './logger'
 import { Main, registerRoute } from './backend/main'
 import {renderToString} from 'react-dom/server'
+import { registerNonceRoute } from './backend/tools/nonce'
+import {trpc} from '@elysiajs/trpc'
+import { trpcRouter } from './backend/tools/trpc'
+import {cookie} from '@elysiajs/cookie'
 
 export const rootPage = (MainComponent: () => React.JSX.Element) => () => {
   const content = BaseHtml.replace("REPLACE_ME", renderToString(MainComponent()))
@@ -17,6 +21,10 @@ export const childPage = (MainComponent: () => (React.JSX.Element | Promise<Reac
 export const app = new Elysia()
   .use(swagger())
   .use(logger())
+  .use(cookie())
+  .use(app => {
+    return app
+  })
   .use(staticPlugin({
     assets: 'dist',
     alwaysStatic: true,
@@ -28,6 +36,7 @@ export const app = new Elysia()
   
 
 registerRoute(app as unknown as Elysia);
+registerNonceRoute(app as unknown as Elysia);
 
 app.listen(3000)
 

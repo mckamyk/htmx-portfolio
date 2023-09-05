@@ -3,6 +3,7 @@ import { portfolioRoutes } from './portfolio/routes'
 import { Accounts } from './portfolio/accounts'
 import React from 'react'
 import type Elysia from 'elysia'
+import Header from './header'
 
 export const registerRoute = (app: Elysia) => {
   statusRoutes(app)
@@ -11,11 +12,7 @@ export const registerRoute = (app: Elysia) => {
 
 const Main = () => (
   <>
-    <div className="mt-2 flex justify-center">
-      <div className="w-[800px]">
-        <a className="text-blue-500 underline" href="/status">Status</a>
-      </div>
-    </div>
+    <Header />
     <div className="mt-6">
       <Accounts />
     </div>
