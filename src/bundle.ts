@@ -24,17 +24,16 @@ async function build(path?: string, mode?: "added" | "updated" | "deleted") {
     bundlerLog.info(`${path} ${mode}`)
   }
 
-  const files = await glob('src/frontend/**/*.component.tsx');
+  // const files = await glob('src/frontend/**/*.component.tsx');
   const t = new Date().getTime()
 
   const output = await Bun.build({
-    entrypoints: files,
+    entrypoints: ["src/frontend/wrapper.ts"],
     root: 'src/frontend/',
     outdir: 'dist',
     minify: false,
-    splitting: true,
+    splitting: false,
     sourcemap: 'external',
-    target: 'browser',
   })
 
   bundlerLog.info(`${output.outputs.length} components built in ${Date.now()-t}ms.`)

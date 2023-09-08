@@ -13,8 +13,6 @@ export const registerRoute = (app: App) => {
 const Main = () => (
   <>
     <Header />
-      <script type="module" src="/public/wagmi/login.component.js" />
-      <wagmi-login></wagmi-login>
     <div className="mt-6">
       <Accounts />
     </div>

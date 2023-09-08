@@ -7,9 +7,7 @@ import {renderToString} from 'react-dom/server'
 import { registerNonceRoute } from './backend/tools/nonce'
 import {cookie as elysiaCookie} from '@elysiajs/cookie'
 import {trpc} from '@elysiajs/trpc'
-import { trpcRouter } from './backend/tools/trpc'
-import {CreateExpressContextOptions} from '@trpc/server/adapters/express'
-import { inferAsyncReturnType } from '@trpc/server'
+import { trpcRouter, createContext } from './backend/tools/trpc'
 
 export const rootPage = (MainComponent: () => React.JSX.Element) => () => {
   const content = BaseHtml.replace("REPLACE_ME", renderToString(MainComponent()))
@@ -20,39 +18,18 @@ export const childPage = (MainComponent: () => (React.JSX.Element | Promise<Reac
   return new Response(renderToString(await MainComponent()), {headers: {'content-type': 'text/html; charset=utf-8'}})
 }
 
-const createContext = ({req, res}: CreateExpressContextOptions) => {
-  const setCookie = (name: string, value: string) => {
-    res.cookie(name, value)
-  }
-
-  const getCookies = () => {
-    return req.cookies
-  }
-
-  return {
-    setCookie, getCookies
-  }
-}
-
-export type TrpcContext = inferAsyncReturnType<typeof createContext>
-
 export const app = new Elysia()
   .use(swagger())
   .use(logger())
   .use(elysiaCookie({
-  }))
-  .use(trpc(trpcRouter, {
-    createContext({req, resHeaders}) {
-      const cookie = req.headers.get('cookie')
-      console.log(cookie)
-      return {
-        resHeaders
-      }
-    }
+
   }))
   .use(staticPlugin({
     assets: 'dist',
     alwaysStatic: true,
+  }))
+  .use(trpc(trpcRouter, {
+    createContext
   }))
   .on('beforeHandle', ctx => {
     ctx.log.info(ctx.request)
@@ -83,6 +60,7 @@ const BaseHtml = `
       <script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://unpkg.com/hyperscript.org"></script>
+      <script src="/public/wrapper.js" type="module"></script>
     </head>
     <body>
       REPLACE_ME
